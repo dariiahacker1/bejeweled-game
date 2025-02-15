@@ -1,3 +1,10 @@
+package bejeweled.consoleui;
+
+import bejeweled.core.Field;
+import bejeweled.core.GameState;
+import bejeweled.core.MoveHandler;
+import bejeweled.core.Player;
+
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;

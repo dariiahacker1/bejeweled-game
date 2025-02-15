@@ -1,3 +1,5 @@
+package bejeweled.core;
+
 public class Player {
     private String username;
     private int score;

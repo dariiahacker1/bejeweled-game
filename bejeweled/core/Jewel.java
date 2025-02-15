@@ -1,3 +1,5 @@
+package bejeweled.core;
+
 public class Jewel {
     private String type;
     private int x, y;

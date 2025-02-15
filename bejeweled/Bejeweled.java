@@ -1,3 +1,9 @@
+package bejeweled;
+
+import bejeweled.consoleui.ConsoleUI;
+import bejeweled.core.Field;
+import bejeweled.core.Player;
+
 public class Bejeweled {
     public static void main(String[] args) {
         Field field = new Field(8, 8);
