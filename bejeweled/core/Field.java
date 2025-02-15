@@ -20,16 +20,45 @@ public class Field {
 
     private void initializeBoard() {
         Random rand = new Random();
-        do {
+        boolean validBoard = false;
+
+        while (!validBoard) {
+            validBoard = true;
+
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-                    if (grid[i][j] == null) {
-                        grid[i][j] = new Jewel(JEWEL_TYPES[rand.nextInt(JEWEL_TYPES.length)], i, j);
-                    }
+                    grid[i][j] = new Jewel(JEWEL_TYPES[rand.nextInt(JEWEL_TYPES.length)], i, j);
                 }
             }
-        } while (!moveHandler.hasPossibleMove() && checkMatches());
+
+            for (int i = 0; i < width - 2; i++) {
+                for (int j = 0; j < height; j++) {
+                    if (grid[i][j].getType().equals(grid[i + 1][j].getType()) &&
+                            grid[i][j].getType().equals(grid[i + 2][j].getType())) {
+                        validBoard = false;
+                        break;
+                    }
+                }
+                if (!validBoard) break;
+            }
+
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height - 2; j++) {
+                    if (grid[i][j].getType().equals(grid[i][j + 1].getType()) &&
+                            grid[i][j].getType().equals(grid[i][j + 2].getType())) {
+                        validBoard = false;
+                        break;
+                    }
+                }
+                if (!validBoard) break;
+            }
+
+            if (validBoard && !moveHandler.hasPossibleMove()) {
+                validBoard = false;
+            }
+        }
     }
+
 
     public boolean checkMatches() {
         for (int i = 0; i < width - 2; i++) {
@@ -103,7 +132,7 @@ public class Field {
             }
         }
 
-        // Apply gravity (shift down)
+        // shift down
         for (int i = 0; i < width; i++) {
             for (int j = height - 1; j >= 0; j--) {
                 if (grid[i][j] == null) {
