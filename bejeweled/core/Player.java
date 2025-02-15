@@ -1,7 +1,7 @@
 package bejeweled.core;
 
 public class Player {
-    private String username;
+    private final String username;
     private int score;
 
     public Player(String username) {
@@ -10,7 +10,6 @@ public class Player {
     }
 
     public void updateScore(int points) { score += points; }
-
     public int getScore() { return score; }
-
+    public String getUsername() { return username; }
 }

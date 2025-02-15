@@ -75,6 +75,7 @@ public class ConsoleUI {
 
         if(moveHandler.isValidMove(x1, y1, x2, y2)) {
             moveHandler.swapJewels(x1, y1, x2, y2);
+            field.checkMatchesAndRemove(player);
         }else{
             System.out.println("Invalid move");
         }

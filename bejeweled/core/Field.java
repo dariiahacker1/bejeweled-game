@@ -6,6 +6,7 @@ public class Field {
     private Jewel[][] grid;
     private int width, height;
     private GameState gameState;
+    private MoveHandler moveHandler;
     private static final String[] JEWEL_TYPES = {"G", "W", "B", "O", "R", "Y", "P"};
 
     public Field(int width, int height) {
@@ -13,6 +14,7 @@ public class Field {
         this.height = height;
         this.grid = new Jewel[width][height];
         this.gameState = GameState.PLAYING;
+        this.moveHandler = new MoveHandler(this);
         initializeBoard();
     }
 
@@ -26,41 +28,10 @@ public class Field {
                     }
                 }
             }
-        } while (!hasPossibleMove());
+        } while (!moveHandler.hasPossibleMove() && checkMatches());
     }
 
-    public void swapJewels(int x1, int y1, int x2, int y2) {
-        Jewel temp = grid[x1][y1];
-        grid[x1][y1] = grid[x2][y2];
-        grid[x2][y2] = temp;
-
-        if(checkMatches()){
-            removeMatches();
-            initializeBoard(); // fill spaces with random gems but field must contain at least one possible move
-        }
-    }
-
-    private boolean hasPossibleMove() {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if ((i < width - 1 && isSwapValid(i, j, i + 1, j)) ||
-                        (j < height - 1 && isSwapValid(i, j, i, j + 1))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean isSwapValid(int x1, int y1, int x2, int y2) {
-        if(Math.abs(x1 - x2) + Math.abs(y1 - y2) != 1) return false;
-        swapJewels(x1, y1, x2, y2);
-        boolean hasMatch = checkMatches();
-        swapJewels(x1, y1, x2, y2);
-        return hasMatch;
-    }
-
-    private boolean checkMatches() {
+    public boolean checkMatches() {
         for (int i = 0; i < width - 2; i++) {
             for (int j = 0; j < height; j++) {
                 if (grid[i][j].getType().equals(grid[i + 1][j].getType()) &&
@@ -82,42 +53,82 @@ public class Field {
         return false;
     }
 
-//    private void removeMatches() {
-//
-//        for (int i = 0; i < width - 2; i++) {
-//            for (int j = 0; j < height; j++) {
-//                String type = grid[i][j].getType();
-//                if (type.equals(grid[i + 1][j].getType()) && type.equals(grid[i + 2][j].getType())) {
-//                    int k = i;
-//                    while (k < width && grid[k][j].getType().equals(type)) {
-//                        grid[k][j] = null;
-//                        k++;
-//                    }
-//
-//                    if(i > 0 && type.equals(grid[i - 1][j].getType())){
-//                       k = i - 1;
-//                       while (k > 0 && grid[k][j].getType().equals(type)) {
-//                           grid[k][j] = null;
-//                           k--;
-//                       }
-//                    }
-//
-//                }
-//            }
-//        }
-//
-//        for (int i = 0; i < width; i++) {
-//            for (int j = 0; j < height - 2; j++) {
-//                if (grid[i][j].getType().equals(grid[i][j + 1].getType()) &&
-//                        grid[i][j].getType().equals(grid[i][j + 2].getType())) {
-//                    return true;
-//                }
-//            }
-//        }
-//
-//        return false;
-//    }
+    public void checkMatchesAndRemove(Player player) {
+        boolean[][] toRemove = new boolean[width][height];
 
+        // Check horizontal matches
+        for (int j = 0; j < height; j++) {
+            int start = 0;
+            while (start < width) {
+                int end = start;
+                while (end < width - 1 && grid[end][j] != null && grid[end + 1][j] != null &&
+                        grid[end][j].getType().equals(grid[end + 1][j].getType())) {
+                    end++;
+                }
+                if (end - start + 1 >= 3) {
+                    player.updateScore((end - start + 1) > 3 ? 30 : 15);
+                    for (int i = start; i <= end; i++) {
+                        toRemove[i][j] = true;
+                    }
+                }
+                start = end + 1;
+            }
+        }
+
+        // Check vertical matches
+        for (int i = 0; i < width; i++) {
+            int start = 0;
+            while (start < height) {
+                int end = start;
+                while (end < height - 1 && grid[i][end] != null && grid[i][end + 1] != null &&
+                        grid[i][end].getType().equals(grid[i][end + 1].getType())) {
+                    end++;
+                }
+                if (end - start + 1 >= 3) {
+                    player.updateScore((end - start + 1) > 3 ? 30 : 15);
+                    for (int j = start; j <= end; j++) {
+                        toRemove[i][j] = true;
+                    }
+                }
+                start = end + 1;
+            }
+        }
+
+        // Remove matched jewels
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (toRemove[i][j]) {
+                    grid[i][j] = null;
+                }
+            }
+        }
+
+        // Apply gravity (shift down)
+        for (int i = 0; i < width; i++) {
+            for (int j = height - 1; j >= 0; j--) {
+                if (grid[i][j] == null) {
+                    int k = j - 1;
+                    while (k >= 0 && grid[i][k] == null) {
+                        k--;
+                    }
+                    if (k >= 0) {
+                        grid[i][j] = grid[i][k];
+                        grid[i][k] = null;
+                    }
+                }
+            }
+        }
+
+        // Refill the board
+        Random rand = new Random();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (grid[i][j] == null) {
+                    grid[i][j] = new Jewel(JEWEL_TYPES[rand.nextInt(JEWEL_TYPES.length)], i, j);
+                }
+            }
+        }
+    }
 
     public void printField() {
         for (int row = 0; row < height; row++) {
@@ -143,5 +154,17 @@ public class Field {
     public int getHeight() {
         return height;
     }
+
+    public Jewel getJewel(int x, int y) {
+        if (x < 0 || x >= width || y < 0 || y >= height) return null;
+        return grid[x][y];
+    }
+
+    public void setJewel(int x, int y, Jewel jewel) {
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+            grid[x][y] = jewel;
+        }
+    }
+
 
 }
