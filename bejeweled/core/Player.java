@@ -11,5 +11,4 @@ public class Player {
 
     public void updateScore(int points) { score += points; }
     public int getScore() { return score; }
-    public String getUsername() { return username; }
 }
