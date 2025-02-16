@@ -1,4 +1,4 @@
-package bejeweled.core;
+package sk.tuke.kpi.kp.bejeweled.core;
 
 public class Jewel {
     private String type;
