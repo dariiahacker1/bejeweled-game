@@ -8,6 +8,8 @@ import src.sk.tuke.kpi.kp.bejeweled.core.Player;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConsoleUI {
     private Field field;
@@ -28,7 +30,7 @@ public class ConsoleUI {
         this.timer = new Timer();
     }
 
-    public void play() {
+    public void play(Field field) {
         startTimer();
 
         while (field.getState() == GameState.PLAYING && timeRemaining > 0) {
@@ -37,10 +39,7 @@ public class ConsoleUI {
                 break;
             }
 
-            field.printField();
-            System.out.println("Current score: " + player.getScore() + " | Win score: " + winScore);
-            System.out.println("Time remaining: " + timeRemaining + " seconds");
-
+            show();
             handleInput();
         }
 
@@ -48,11 +47,71 @@ public class ConsoleUI {
 
         if (field.getState() == GameState.SOLVED) {
             System.out.println("You won!");
+            handleRestart();
+        } else if (field.getState() == GameState.STOPPED) {
+            System.out.println("You won!");
+            handleRestart();
         } else {
             field.setState(GameState.FAILED);
             System.out.println("Time's up! You lost.");
+            handleRestart();
         }
     }
+
+    private void show() {
+        field.printField();
+        System.out.println("Current score: " + player.getScore() + " | Win score: " + winScore);
+        System.out.println("Time remaining: " + timeRemaining + " seconds");
+    }
+
+//    private void handleInput() {
+
+//    / /        System.out.print("Enter move (y1 x1 y2 x2): ");
+//    / /        int x1 = scanner.nextInt() - 65, y1 = scanner.nextInt();
+//    / /        int x2 = scanner.nextInt() - 65, y2 = scanner.nextInt();
+//    / /
+//    / /        if (moveHandler.isValidMove(x1, y1, x2, y2)) {
+//    / /            moveHandler.swapJewels(x1, y1, x2, y2);
+//    / /            field.checkMatchesAndRemove(player);
+//    / /        } else {
+//    / /            System.out.println("Invalid move");
+//    / /        }
+
+//    }
+
+    private void handleInput() {
+        Pattern pattern = Pattern.compile("([A-H])([0-8])\\s([A-H])([0-8])");
+        System.out.print("Enter move (eg. A1 A2) or X for game stop: ");
+        String input = scanner.nextLine().toUpperCase().trim();
+
+        if (input.equals("X")) {
+            field.setState(GameState.STOPPED);
+            System.out.println("You lost!");
+            return;
+        }
+
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            int y1 = matcher.group(1).charAt(0) - 'A';
+            int x1 = Integer.parseInt(matcher.group(2));
+            int y2 = matcher.group(3).charAt(0) - 'A';
+            int x2 = Integer.parseInt(matcher.group(4));
+
+            if (moveHandler.isValidMove(x1, y1, x2, y2)) {
+                moveHandler.swapJewels(x1, y1, x2, y2);
+                field.checkMatchesAndRemove(player);
+            } else {
+                System.out.println("Invalid move. Try again.");
+            }
+        } else {
+            System.out.println("Invalid input format. Please use the format like A1 A2.");
+        }
+    }
+
+    private void handleRestart(){
+        System.out.println("Prajete si začatie novej hry (A/N)?");
+    }
+
 
     private void startTimer() {
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -68,17 +127,4 @@ public class ConsoleUI {
         }, 1000, 1000);
     }
 
-    private void handleInput() {
-        System.out.print("Enter move (x1 y1 x2 y2): ");
-        int x1 = scanner.nextInt(), y1 = scanner.nextInt();
-        int x2 = scanner.nextInt(), y2 = scanner.nextInt();
-
-        if(moveHandler.isValidMove(x1, y1, x2, y2)) {
-            moveHandler.swapJewels(x1, y1, x2, y2);
-            field.checkMatchesAndRemove(player);
-        }else{
-            System.out.println("Invalid move");
-        }
-
-    }
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import src.sk.tuke.kpi.kp.bejeweled.core.Field;
 import src.sk.tuke.kpi.kp.bejeweled.core.GameState;
+import src.sk.tuke.kpi.kp.bejeweled.core.JewelState;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +21,7 @@ public class FieldTest {
         assertNotNull(field, "Field should be initialized.");
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                assertNotNull(field.getJewel(i, j), "Each tile should contain a jewel.");
+                assertEquals(JewelState.ADDED,field.getJewel(i, j).getState(),"Each jewel should have been added.");
             }
         }
     }
