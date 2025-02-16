@@ -1,4 +1,4 @@
-package sk.tuke.kpi.kp.bejeweled.core;
+package src.sk.tuke.kpi.kp.bejeweled.core;
 
 public enum GameState {
     PLAYING,

@@ -1,4 +1,4 @@
-package sk.tuke.kpi.kp.bejeweled.core;
+package src.sk.tuke.kpi.kp.bejeweled.core;
 
 public class MoveHandler {
 
@@ -14,15 +14,13 @@ public class MoveHandler {
             return false;
         }
 
-        if (Math.abs(x1 - x2) + Math.abs(y1 - y2) != 1) {
-            return false;
-        }
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2) == 1;
 
-        if (!isSwapValid(x1, y1, x2, y2)) {
-            return false;
-        }
-
-        return true;
+//        if (!isSwapValid(x1, y1, x2, y2)) {
+//            return false;
+//        }
+//
+//        return true;
     }
 
     public boolean hasPossibleMove() {

@@ -1,9 +1,9 @@
-package sk.tuke.kpi.kp.bejeweled.consoleui;
+package src.sk.tuke.kpi.kp.bejeweled.consoleui;
 
-import sk.tuke.kpi.kp.bejeweled.core.Field;
-import sk.tuke.kpi.kp.bejeweled.core.GameState;
-import sk.tuke.kpi.kp.bejeweled.core.MoveHandler;
-import sk.tuke.kpi.kp.bejeweled.core.Player;
+import src.sk.tuke.kpi.kp.bejeweled.core.Field;
+import src.sk.tuke.kpi.kp.bejeweled.core.GameState;
+import src.sk.tuke.kpi.kp.bejeweled.core.MoveHandler;
+import src.sk.tuke.kpi.kp.bejeweled.core.Player;
 
 import java.util.Scanner;
 import java.util.Timer;

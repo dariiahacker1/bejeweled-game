@@ -1,8 +1,8 @@
-package sk.tuke.kpi.kp.bejeweled;
+package src.sk.tuke.kpi.kp.bejeweled;
 
-import sk.tuke.kpi.kp.bejeweled.consoleui.ConsoleUI;
-import sk.tuke.kpi.kp.bejeweled.core.Field;
-import sk.tuke.kpi.kp.bejeweled.core.Player;
+import src.sk.tuke.kpi.kp.bejeweled.consoleui.ConsoleUI;
+import src.sk.tuke.kpi.kp.bejeweled.core.Field;
+import src.sk.tuke.kpi.kp.bejeweled.core.Player;
 
 public class Bejeweled {
     public static void main(String[] args) {
