@@ -1,4 +1,4 @@
-package src.sk.tuke.kpi.kp.bejeweled;
+package sk.tuke.kpi.kp.bejeweled.src;
 
 import java.util.Date;
 

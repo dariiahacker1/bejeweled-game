@@ -1,4 +1,4 @@
-package src.sk.tuke.kpi.kp.bejeweled.core;
+package sk.tuke.kpi.kp.bejeweled.src.core;
 
 import java.util.Random;
 

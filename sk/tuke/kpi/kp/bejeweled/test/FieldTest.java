@@ -1,10 +1,10 @@
-package test.sk.tuke.kpi.kp;
+package sk.tuke.kpi.kp.bejeweled.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import src.sk.tuke.kpi.kp.bejeweled.core.Field;
-import src.sk.tuke.kpi.kp.bejeweled.core.GameState;
-import src.sk.tuke.kpi.kp.bejeweled.core.JewelState;
+import sk.tuke.kpi.kp.bejeweled.src.core.Field;
+import sk.tuke.kpi.kp.bejeweled.src.core.GameState;
+import sk.tuke.kpi.kp.bejeweled.src.core.JewelState;
 
 import static org.junit.jupiter.api.Assertions.*;
 

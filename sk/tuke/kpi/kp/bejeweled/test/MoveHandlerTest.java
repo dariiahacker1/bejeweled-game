@@ -1,9 +1,9 @@
-package test.sk.tuke.kpi.kp;
+package sk.tuke.kpi.kp.bejeweled.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import src.sk.tuke.kpi.kp.bejeweled.core.Field;
-import src.sk.tuke.kpi.kp.bejeweled.core.MoveHandler;
+import sk.tuke.kpi.kp.bejeweled.src.core.Field;
+import sk.tuke.kpi.kp.bejeweled.src.core.MoveHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 

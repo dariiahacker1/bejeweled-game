@@ -1,8 +1,8 @@
-package test.sk.tuke.kpi.kp;
+package sk.tuke.kpi.kp.bejeweled.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import src.sk.tuke.kpi.kp.bejeweled.core.Player;
+import sk.tuke.kpi.kp.bejeweled.src.core.Player;
 
 import static org.junit.jupiter.api.Assertions.*;
 
