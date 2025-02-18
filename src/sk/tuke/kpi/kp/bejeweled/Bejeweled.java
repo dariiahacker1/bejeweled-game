@@ -8,7 +8,7 @@ public class Bejeweled {
     public static void main(String[] args) {
         Field field = new Field(8, 8);
         Player player = new Player("dashenka");
-        ConsoleUI ui = new ConsoleUI(field, player, 1000, 300);
+        ConsoleUI ui = new ConsoleUI(field, player, 500, 300);
         ui.play(field);
     }
 }

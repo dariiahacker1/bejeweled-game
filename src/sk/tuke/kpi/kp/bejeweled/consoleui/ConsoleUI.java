@@ -49,7 +49,7 @@ public class ConsoleUI {
             System.out.println("You won!");
             handleRestart();
         } else if (field.getState() == GameState.STOPPED) {
-            System.out.println("You won!");
+            System.out.println("Game over!");
             handleRestart();
         } else {
             field.setState(GameState.FAILED);
@@ -64,20 +64,6 @@ public class ConsoleUI {
         System.out.println("Time remaining: " + timeRemaining + " seconds");
     }
 
-//    private void handleInput() {
-
-//    / /        System.out.print("Enter move (y1 x1 y2 x2): ");
-//    / /        int x1 = scanner.nextInt() - 65, y1 = scanner.nextInt();
-//    / /        int x2 = scanner.nextInt() - 65, y2 = scanner.nextInt();
-//    / /
-//    / /        if (moveHandler.isValidMove(x1, y1, x2, y2)) {
-//    / /            moveHandler.swapJewels(x1, y1, x2, y2);
-//    / /            field.checkMatchesAndRemove(player);
-//    / /        } else {
-//    / /            System.out.println("Invalid move");
-//    / /        }
-
-//    }
 
     private void handleInput() {
         Pattern pattern = Pattern.compile("([A-H])([0-8])\\s([A-H])([0-8])");
@@ -108,8 +94,28 @@ public class ConsoleUI {
         }
     }
 
-    private void handleRestart(){
+    private void handleRestart() {
         System.out.println("Prajete si začatie novej hry (A/N)?");
+        String input = scanner.nextLine().trim().toUpperCase();
+
+        if (input.equals("A")) {
+            System.out.println("Začíname novú hru...");
+
+            field.initializeBoard();
+            field.setState(GameState.PLAYING);
+            player.resetScore();
+            timeRemaining = 300;
+
+            timer.cancel();
+            timer.purge();
+            timer = new Timer();
+            startTimer();
+
+            play(field);
+        } else {
+            System.out.println("Ďakujeme za hranie!");
+            System.exit(0);
+        }
     }
 
 

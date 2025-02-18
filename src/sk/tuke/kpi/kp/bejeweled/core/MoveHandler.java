@@ -15,12 +15,6 @@ public class MoveHandler {
         }
 
         return Math.abs(x1 - x2) + Math.abs(y1 - y2) == 1;
-
-//        if (!isSwapValid(x1, y1, x2, y2)) {
-//            return false;
-//        }
-//
-//        return true;
     }
 
     public boolean hasPossibleMove() {
@@ -50,7 +44,6 @@ public class MoveHandler {
     }
 
     public void swapJewels(int x1, int y1, int x2, int y2) {
-        //if (!isValidMove(x1, y1, x2, y2)) return;
 
         Jewel jewel1 = field.getJewel(x1, y1);
         Jewel jewel2 = field.getJewel(x2, y2);

@@ -1,4 +1,4 @@
-package test.sk.tuke.kp.bejeweled;
+package test.sk.tuke.kpi.kp;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
