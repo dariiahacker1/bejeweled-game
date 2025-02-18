@@ -1,13 +1,17 @@
 package sk.tuke.kpi.kp.bejeweled.src.consoleui;
 
+import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.service.CommentService;
+import sk.tuke.gamestudio.service.CommentServiceJDBC;
+import sk.tuke.gamestudio.service.RatingServiceJDBC;
+import sk.tuke.gamestudio.service.ScoreServiceJDBC;
 import sk.tuke.kpi.kp.bejeweled.src.core.Field;
 import sk.tuke.kpi.kp.bejeweled.src.core.GameState;
 import sk.tuke.kpi.kp.bejeweled.src.core.MoveHandler;
 import sk.tuke.kpi.kp.bejeweled.src.core.Player;
 
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,17 +24,29 @@ public class ConsoleUI {
     private int timeRemaining;
     private Timer timer;
 
-    public ConsoleUI(Field field, Player player, int winScore, int timeLimitInSeconds) {
+    private CommentServiceJDBC commentService;
+    private RatingServiceJDBC ratingService;
+    private ScoreServiceJDBC scoreService;
+
+    public ConsoleUI(Field field, int winScore, int timeLimitInSeconds) {
         this.field = field;
-        this.player = player;
         this.moveHandler = new MoveHandler(field);
         this.scanner = new Scanner(System.in);
         this.winScore = winScore;
         this.timeRemaining = timeLimitInSeconds;
         this.timer = new Timer();
+
+        this.commentService = new CommentServiceJDBC();
+        this.ratingService = new RatingServiceJDBC();
+        this.scoreService = new ScoreServiceJDBC();
     }
 
     public void play(Field field) {
+        System.out.print("Welcome to Bejeweled!\nEnter your name: ");
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.nextLine();
+        player = new Player(name);
+
         startTimer();
 
         while (field.getState() == GameState.PLAYING && timeRemaining > 0) {
@@ -47,13 +63,16 @@ public class ConsoleUI {
 
         if (field.getState() == GameState.SOLVED) {
             System.out.println("You won!");
+            scoreService.addScore(new Score("Bejeweled", player.getUsername(), player.getScore(), new Date()));
             handleRestart();
         } else if (field.getState() == GameState.STOPPED) {
             System.out.println("Game over!");
+            scoreService.addScore(new Score("Bejeweled", player.getUsername(), player.getScore(), new Date()));
             handleRestart();
         } else {
             field.setState(GameState.FAILED);
             System.out.println("Time's up! You lost.");
+            scoreService.addScore(new Score("Bejeweled", player.getUsername(), player.getScore(), new Date()));
             handleRestart();
         }
     }
@@ -63,7 +82,6 @@ public class ConsoleUI {
         System.out.println("Current score: " + player.getScore() + " | Win score: " + winScore);
         System.out.println("Time remaining: " + timeRemaining + " seconds");
     }
-
 
     private void handleInput() {
         Pattern pattern = Pattern.compile("([A-H])([0-8])\\s([A-H])([0-8])");
@@ -113,8 +131,25 @@ public class ConsoleUI {
 
             play(field);
         } else {
-            System.out.println("Ďakujeme za hranie!");
-            System.exit(0);
+            System.out.println("Chceš vidieť top 10 hráčov? (A/N)");
+            String input2 = scanner.nextLine().trim().toUpperCase();
+            if (input2.equals("A")) {
+                showTopPlayers();
+            }else{
+                System.out.println("Ďakujeme za hranie!");
+                System.exit(0);
+            }
+
+        }
+    }
+
+    public void showTopPlayers() {
+        List<Score> topScores = scoreService.getTopScores("Bejeweled");
+        System.out.println("TOP 10 hráčov:");
+
+        for (int i = 0; i < topScores.size(); i++) {
+            Score score = topScores.get(i);
+            System.out.println((i + 1) + ". " + score.getPlayer() + " - " + score.getPoints());
         }
     }
 
