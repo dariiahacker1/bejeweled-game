@@ -101,12 +101,6 @@ public class ConsoleUI {
             int y2 = matcher.group(3).charAt(0) - 'A';
             int x2 = Integer.parseInt(matcher.group(4));
 //
-//            if (moveHandler.isValidMove(x1, y1, x2, y2)) {
-//                moveHandler.swapJewels(x1, y1, x2, y2);
-//                field.checkMatchesAndRemove(player);
-//            } else {
-//                System.out.println("Invalid move. Try again.");
-//            }
 
             if (moveHandler.isValidMove(x1, y1, x2, y2)) {
                 if (moveHandler.isSwapValid(x1, y1, x2, y2)) {
