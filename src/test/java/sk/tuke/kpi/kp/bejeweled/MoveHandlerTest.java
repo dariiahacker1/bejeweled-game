@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import sk.tuke.kpi.kp.bejeweled.core.Field;
 import sk.tuke.kpi.kp.bejeweled.core.MoveHandler;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class MoveHandlerTest {
     private Field field;
     private MoveHandler moveHandler;

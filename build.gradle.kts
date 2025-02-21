@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.postgresql:postgresql:42.2.19")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
 
