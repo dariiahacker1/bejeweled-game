@@ -1,13 +1,19 @@
 package sk.tuke.kpi.kp.bejeweled.core;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Random;
 
+
+@Getter
+@Setter
 public class Field {
     private Jewel[][] grid;
     private int width, height;
     private GameState gameState;
     private MoveHandler moveHandler;
-    private static final String[] JEWEL_TYPES = {"G", "W", "B", "O", "R", "Y", "P"};
+    private static final JewelType[] JEWEL_TYPES = JewelType.values();
 
     public Field(int width, int height) {
         this.width = width;
@@ -82,105 +88,103 @@ public class Field {
         return false;
     }
 
-public void checkMatchesAndRemove(Player player) {
-    boolean firstMatch = false;  // Flag to update score only once.
-    boolean matchesFound;
-    do {
-        matchesFound = false;
-        boolean[][] toRemove = new boolean[width][height];
+    public void checkMatchesAndRemove(Player player) {
+        boolean firstMatch = false;  // Flag to update score only once.
+        boolean matchesFound;
+        do {
+            matchesFound = false;
+            boolean[][] toRemove = new boolean[width][height];
 
-        // Check horizontal matches.
-        for (int j = 0; j < height; j++) {
-            int start = 0;
-            while (start < width) {
-                int end = start;
-                while (end < width - 1 && grid[end][j] != null && grid[end + 1][j] != null &&
-                        grid[end][j].getType().equals(grid[end + 1][j].getType())) {
-                    end++;
-                }
-                if (end - start + 1 >= 3) {
-                    matchesFound = true;
-                    // Only update score for the initial match.
-                    if (!firstMatch) {
-                        player.updateScore((end - start + 1) * 5);
-                        firstMatch = true;
-                    }
-                    for (int i = start; i <= end; i++) {
-                        grid[i][j].setState(JewelState.REMOVED);
-                        toRemove[i][j] = true;
-                    }
-                }
-                start = end + 1;
-            }
-        }
-
-        // Check vertical matches.
-        for (int i = 0; i < width; i++) {
-            int start = 0;
-            while (start < height) {
-                int end = start;
-                while (end < height - 1 && grid[i][end] != null && grid[i][end + 1] != null &&
-                        grid[i][end].getType().equals(grid[i][end + 1].getType())) {
-                    end++;
-                }
-                if (end - start + 1 >= 3) {
-                    matchesFound = true;
-                    // Only update score for the initial match.
-                    if (!firstMatch) {
-                        player.updateScore((end - start + 1) * 5);
-                        firstMatch = true;
-                    }
-                    for (int j = start; j <= end; j++) {
-                        grid[i][j].setState(JewelState.REMOVED);
-                        toRemove[i][j] = true;
-                    }
-                }
-                start = end + 1;
-            }
-        }
-
-        // Mark all jewels to be removed.
-        for (int i = 0; i < width; i++) {
+            // Check horizontal matches.
             for (int j = 0; j < height; j++) {
-                if (toRemove[i][j]) {
-                    grid[i][j].setState(JewelState.REMOVED);
-                }
-            }
-        }
-
-        // Collapse the board: move jewels down.
-        for (int i = 0; i < width; i++) {
-            for (int j = height - 1; j >= 0; j--) {
-                if (grid[i][j].getState() == JewelState.REMOVED) {
-                    int k = j - 1;
-                    while (k >= 0 && grid[i][k].getState() == JewelState.REMOVED) {
-                        k--;
+                int start = 0;
+                while (start < width) {
+                    int end = start;
+                    while (end < width - 1 && grid[end][j] != null && grid[end + 1][j] != null &&
+                            grid[end][j].getType().equals(grid[end + 1][j].getType())) {
+                        end++;
                     }
-                    if (k >= 0) {
-                        grid[i][j] = grid[i][k];
-                        grid[i][k] = new Jewel(grid[i][k].getType(), i, k);
-                        grid[i][k].setState(JewelState.ADDED);
+                    if (end - start + 1 >= 3) {
+                        matchesFound = true;
+                        // Only update score for the initial match.
+                        if (!firstMatch) {
+                            player.updateScore((end - start + 1) * 5);
+                            firstMatch = true;
+                        }
+                        for (int i = start; i <= end; i++) {
+                            grid[i][j].setState(JewelState.REMOVED);
+                            toRemove[i][j] = true;
+                        }
+                    }
+                    start = end + 1;
+                }
+            }
+
+            // Check vertical matches.
+            for (int i = 0; i < width; i++) {
+                int start = 0;
+                while (start < height) {
+                    int end = start;
+                    while (end < height - 1 && grid[i][end] != null && grid[i][end + 1] != null &&
+                            grid[i][end].getType().equals(grid[i][end + 1].getType())) {
+                        end++;
+                    }
+                    if (end - start + 1 >= 3) {
+                        matchesFound = true;
+                        // Only update score for the initial match.
+                        if (!firstMatch) {
+                            player.updateScore((end - start + 1) * 5);
+                            firstMatch = true;
+                        }
+                        for (int j = start; j <= end; j++) {
+                            grid[i][j].setState(JewelState.REMOVED);
+                            toRemove[i][j] = true;
+                        }
+                    }
+                    start = end + 1;
+                }
+            }
+
+            // Mark all jewels to be removed.
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    if (toRemove[i][j]) {
+                        grid[i][j].setState(JewelState.REMOVED);
                     }
                 }
             }
-        }
 
-        // Refill the board with new jewels where necessary.
-        Random rand = new Random();
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (grid[i][j].getState() == JewelState.REMOVED) {
-                    grid[i][j] = new Jewel(JEWEL_TYPES[rand.nextInt(JEWEL_TYPES.length)], i, j);
-                    grid[i][j].setState(JewelState.ADDED);
+            // Collapse the board: move jewels down.
+            for (int i = 0; i < width; i++) {
+                for (int j = height - 1; j >= 0; j--) {
+                    if (grid[i][j].getState() == JewelState.REMOVED) {
+                        int k = j - 1;
+                        while (k >= 0 && grid[i][k].getState() == JewelState.REMOVED) {
+                            k--;
+                        }
+                        if (k >= 0) {
+                            grid[i][j] = grid[i][k];
+                            grid[i][k] = new Jewel(grid[i][k].getType(), i, k);
+                            grid[i][k].setState(JewelState.ADDED);
+                        }
+                    }
                 }
             }
-        }
-    } while (matchesFound);
-}
 
+            // Refill the board with new jewels where necessary.
+            Random rand = new Random();
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    if (grid[i][j].getState() == JewelState.REMOVED) {
+                        grid[i][j] = new Jewel(JEWEL_TYPES[rand.nextInt(JEWEL_TYPES.length)], i, j);
+                        grid[i][j].setState(JewelState.ADDED);
+                    }
+                }
+            }
+        } while (matchesFound);
+    }
 
     public void printField() {
-
         System.out.print("   ");
         for (int col = 0; col < width; col++) {
             System.out.print(col + " ");
@@ -190,26 +194,10 @@ public void checkMatchesAndRemove(Player player) {
         for (int row = 0; row < height; row++) {
             System.out.print(Character.toString(65 + row) + "  ");
             for (int col = 0; col < width; col++) {
-                System.out.print(grid[col][row].getType() + " ");
+                System.out.print(grid[col][row].getType().name().substring(0,1).toUpperCase() + " ");
             }
             System.out.println();
         }
-    }
-
-    public GameState getState() {
-        return gameState;
-    }
-
-    public void setState(GameState state) {
-        this.gameState = state;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
     public Jewel getJewel(int x, int y) {
@@ -222,6 +210,5 @@ public void checkMatchesAndRemove(Player player) {
             grid[x][y] = jewel;
         }
     }
-
 
 }

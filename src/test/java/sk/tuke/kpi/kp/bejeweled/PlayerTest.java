@@ -27,5 +27,4 @@ public class PlayerTest {
         player.updateScore(20);
         assertEquals(30, player.getScore(), "Score should be updated to 30");
     }
-
 }

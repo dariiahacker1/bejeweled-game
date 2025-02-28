@@ -33,7 +33,7 @@ public class FieldTest {
 
     @Test
     public void testInitialGameState() {
-        assertEquals(GameState.PLAYING, field.getState(), "Initial game state should be PLAYING.");
+        assertEquals(GameState.PLAYING, field.getGameState(), "Initial game state should be PLAYING.");
     }
 
 }

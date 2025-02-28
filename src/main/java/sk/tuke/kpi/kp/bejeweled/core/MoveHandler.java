@@ -1,35 +1,24 @@
 package sk.tuke.kpi.kp.bejeweled.core;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class MoveHandler {
 
     private final Field field;
 
-    public MoveHandler(Field field) {
-        this.field = field;
-    }
-
     public boolean isValidMove(int x1, int y1, int x2, int y2) {
-        if (x1 < 0 || x1 >= field.getWidth() || y1 < 0 || y1 >= field.getHeight() ||
-                x2 < 0 || x2 >= field.getWidth() || y2 < 0 || y2 >= field.getHeight()) {
-            return false;
-        }
-
-        return Math.abs(x1 - x2) + Math.abs(y1 - y2) == 1;
+        return (x1 >= 0 && x1 < field.getWidth() && y1 >= 0 && y1 < field.getHeight() &&
+                x2 >= 0 && x2 < field.getWidth() && y2 >= 0 && y2 < field.getHeight()) &&
+                Math.abs(x1 - x2) + Math.abs(y1 - y2) == 1;
     }
 
     public boolean hasPossibleMove() {
         for (int x = 0; x < field.getWidth(); x++) {
             for (int y = 0; y < field.getHeight(); y++) {
-                if (x + 1 < field.getWidth()) {
-                    if (isSwapValid(x, y, x + 1, y)) {
-                        return true;
-                    }
-                }
-
-                if (y + 1 < field.getHeight()) {
-                    if (isSwapValid(x, y, x, y + 1)) {
-                        return true;
-                    }
+                if ((x + 1 < field.getWidth() && isSwapValid(x, y, x + 1, y)) ||
+                        (y + 1 < field.getHeight() && isSwapValid(x, y, x, y + 1))) {
+                    return true;
                 }
             }
         }
@@ -44,7 +33,6 @@ public class MoveHandler {
     }
 
     public void swapJewels(int x1, int y1, int x2, int y2) {
-
         Jewel jewel1 = field.getJewel(x1, y1);
         Jewel jewel2 = field.getJewel(x2, y2);
 

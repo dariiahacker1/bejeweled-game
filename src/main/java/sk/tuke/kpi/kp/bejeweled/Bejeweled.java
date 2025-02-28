@@ -8,6 +8,6 @@ public class Bejeweled {
     public static void main(String[] args) {
         Field field = new Field(8, 8);
         ConsoleUI ui = new ConsoleUI(field, 400, 300);
-        ui.play(field);
+        ui.play();
     }
 }

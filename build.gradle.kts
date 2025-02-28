@@ -17,6 +17,8 @@ repositories {
 dependencies {
     implementation("org.postgresql:postgresql:42.2.19")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    compileOnly("org.projectlombok:lombok:1.18.36")
+    annotationProcessor("org.projectlombok:lombok:1.18.36")
 }
 
 tasks.test {
@@ -24,6 +26,7 @@ tasks.test {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
+

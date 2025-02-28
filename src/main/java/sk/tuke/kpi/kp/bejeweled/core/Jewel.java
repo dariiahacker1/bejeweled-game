@@ -1,19 +1,19 @@
 package sk.tuke.kpi.kp.bejeweled.core;
 
-public class Jewel {
-    private String type;
-    private int x, y;
-    private JewelState state;
+import lombok.Getter;
+import lombok.Setter;
 
-    public Jewel(String type, int x, int y) {
+@Getter
+@Setter
+public class Jewel {
+    private JewelType type;
+    private int x, y;
+    private JewelState state = JewelState.ADDED;
+
+    public Jewel(JewelType type, int x, int y) {
         this.type = type;
         this.x = x;
         this.y = y;
-        this.state = JewelState.ADDED;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public void setPosition(int x, int y) {
@@ -21,11 +21,4 @@ public class Jewel {
         this.y = y;
     }
 
-    public JewelState getState() {
-        return state;
-    }
-
-    public void setState(JewelState state) {
-        this.state = state;
-    }
 }

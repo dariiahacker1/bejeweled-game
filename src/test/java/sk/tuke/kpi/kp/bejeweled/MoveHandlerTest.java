@@ -36,10 +36,8 @@ public class MoveHandlerTest {
         assertFalse(moveHandler.isValidMove(3, 3, 3, 6));
     }
 
-
     @Test
     public void testHasPossibleMove() {
         assertTrue(moveHandler.hasPossibleMove());
     }
-
 }
