@@ -35,12 +35,6 @@ public class ConsoleUI {
         this.timeRemaining = timeLimitInSeconds;
     }
 
-    private void initializePlayer() {
-        System.out.print("Welcome to Bejeweled!\nEnter your name: ");
-        String name = scanner.nextLine().trim();
-        player = new Player(name);
-    }
-
     public void play() {
         initializePlayer();
         startTimer();
@@ -57,6 +51,13 @@ public class ConsoleUI {
         timer.cancel();
         endGame();
     }
+
+    private void initializePlayer() {
+        System.out.print("Welcome to Bejeweled!\nEnter your name: ");
+        String name = scanner.nextLine().trim();
+        player = new Player(name);
+    }
+
 
     private void showCurrentState() {
         field.printField();
@@ -100,7 +101,6 @@ public class ConsoleUI {
     }
 
     private void endGame() {
-
         scoreService.addScore(new Score("Bejeweled", player.getUsername(), player.getScore(), new Date()));
 
         if (field.getGameState() == GameState.PLAYING && timeRemaining == 0) {
