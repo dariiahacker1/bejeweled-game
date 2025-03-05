@@ -11,7 +11,6 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-
 public class Comment {
     private String game;
     private String player;
