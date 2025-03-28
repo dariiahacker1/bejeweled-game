@@ -1,5 +1,6 @@
 package sk.tuke.kpi.kp.bejeweled.service;
 
+import org.hibernate.annotations.NamedQuery;
 import sk.tuke.kpi.kp.bejeweled.entity.Score;
 
 import java.sql.*;
@@ -7,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@NamedQuery( name = "Score.getTopScores",
+        query = "SELECT s FROM Score s WHERE s.game=:game ORDER BY s.points DESC")
+@NamedQuery( name = "Score.resetScores",
+        query = "DELETE FROM Score")
 public class ScoreServiceJDBC implements ScoreService {
     public static final String URL = "jdbc:postgresql://localhost:5432/gamestudio";
     public static final String USER = "postgres";

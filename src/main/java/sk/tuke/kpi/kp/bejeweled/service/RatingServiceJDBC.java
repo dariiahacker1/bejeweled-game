@@ -15,7 +15,7 @@ public class RatingServiceJDBC implements RatingService {
             "INSERT INTO rating (game, player, rating, ratedOn) VALUES (?, ?, ?, ?) " +
                     "ON CONFLICT (game, player) DO UPDATE SET rating = EXCLUDED.rating, ratedOn = EXCLUDED.ratedOn";
 
-    public static final String SELECT_AVG_RATING = "SELECT AVG(rating) FROM rating WHERE game = ?";
+    public static final String SELECT_AVG_RATING = "AVG(rating) FROM rating WHERE game = ?";
     public static final String SELECT_RATING = "SELECT rating FROM rating WHERE game = ? AND player = ?";
     public static final String DELETE = "DELETE FROM rating";
 

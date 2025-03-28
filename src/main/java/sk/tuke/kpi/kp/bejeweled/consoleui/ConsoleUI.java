@@ -1,12 +1,12 @@
 package sk.tuke.kpi.kp.bejeweled.consoleui;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import sk.tuke.kpi.kp.bejeweled.core.Field;
 import sk.tuke.kpi.kp.bejeweled.core.GameState;
 import sk.tuke.kpi.kp.bejeweled.core.MoveHandler;
 import sk.tuke.kpi.kp.bejeweled.core.Player;
-import sk.tuke.kpi.kp.bejeweled.service.CommentServiceJDBC;
-import sk.tuke.kpi.kp.bejeweled.service.RatingServiceJDBC;
-import sk.tuke.kpi.kp.bejeweled.service.ScoreServiceJDBC;
+import sk.tuke.kpi.kp.bejeweled.service.*;
 import sk.tuke.kpi.kp.bejeweled.entity.Comment;
 import sk.tuke.kpi.kp.bejeweled.entity.Rating;
 import sk.tuke.kpi.kp.bejeweled.entity.Score;
@@ -15,18 +15,22 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class ConsoleUI {
     private final Field field;
     private Player player;
-    private MoveHandler moveHandler;
-    private Scanner scanner = new Scanner(System.in);
+    private final MoveHandler moveHandler;
+    private final Scanner scanner = new Scanner(System.in);
     private final int winScore;
     private int timeRemaining;
     private Timer timer = new Timer();
 
-    private CommentServiceJDBC commentService = new CommentServiceJDBC();
-    private RatingServiceJDBC ratingService = new RatingServiceJDBC();
-    private ScoreServiceJDBC scoreService = new ScoreServiceJDBC();
+    @Autowired
+    private CommentServiceJPA commentService;
+    @Autowired
+    private RatingServiceJPA ratingService;
+    @Autowired
+    private ScoreServiceJPA scoreService;
 
     public ConsoleUI(Field field, int winScore, int timeLimitInSeconds) {
         this.field = field;

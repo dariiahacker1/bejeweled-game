@@ -1,19 +1,44 @@
 package sk.tuke.kpi.kp.bejeweled.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
+@Entity
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Comment {
+@NamedQuery(
+        name = "Comment.getComments",
+        query = "SELECT c FROM Comment c WHERE c.game = :game ORDER BY c.commentedOn DESC"
+)
+@NamedQuery(
+        name = "Comment.resetComments",
+        query = "DELETE FROM Comment"
+)
+//@NamedQuery(
+//        name = "Comment.addComment",
+//        query = "INSERT INTO Comment (game, player, comment, commentedOn) VALUES (:game, :player, :comment, :commentedOn)"
+//)
+public class Comment implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int ident;
+
     private String game;
     private String player;
     private String comment;
     private Date commentedOn;
+
+    public Comment(String game, String player, String comment, Date commentedOn) {
+        this.game = game;
+        this.player = player;
+        this.comment = comment;
+        this.commentedOn = commentedOn;
+    }
 }
