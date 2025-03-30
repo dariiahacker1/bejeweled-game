@@ -1,6 +1,7 @@
 package sk.tuke.kpi.kp.bejeweled.consoleui;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import sk.tuke.kpi.kp.bejeweled.core.Field;
 import sk.tuke.kpi.kp.bejeweled.core.GameState;
@@ -32,7 +33,8 @@ public class ConsoleUI {
     @Autowired
     private ScoreServiceJPA scoreService;
 
-    public ConsoleUI(Field field, int winScore, int timeLimitInSeconds) {
+    @Autowired
+    public ConsoleUI(Field field, @Value("${game.winScore}") int winScore, @Value("${game.timeLimit}") int timeLimitInSeconds) {
         this.field = field;
         this.moveHandler = new MoveHandler(field);
         this.winScore = winScore;
@@ -105,7 +107,7 @@ public class ConsoleUI {
     }
 
     private void endGame() {
-        scoreService.addScore(new Score("Bejeweled", player.getUsername(), player.getScore(), new Date()));
+        scoreService.addScore(new Score("bejeweled", player.getUsername(), player.getScore(), new Date()));
 
         if (field.getGameState() == GameState.PLAYING && timeRemaining == 0) {
             field.setGameState(GameState.FAILED);
@@ -157,7 +159,7 @@ public class ConsoleUI {
     }
 
     private void showTopPlayers() {
-        List<Score> topScores = scoreService.getTopScores("Bejeweled");
+        List<Score> topScores = scoreService.getTopScores("bejeweled");
         System.out.println("TOP 10 players:");
 
         for (int i = 0; i < topScores.size(); i++) {
@@ -200,7 +202,7 @@ public class ConsoleUI {
         System.out.println("What would you like to say about the game?");
         String input = scanner.nextLine().trim();
 
-        commentService.addComment(new Comment("Bejeweled", player.getUsername(), input, new Date()));
+        commentService.addComment(new Comment("bejeweled", player.getUsername(), input, new Date()));
         System.out.println("Thank you for your comment!");
     }
 

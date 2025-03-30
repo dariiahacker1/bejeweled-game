@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.hibernate.annotations.NamedQuery;
+import jakarta.persistence.NamedQuery;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -33,6 +33,8 @@ public class Score implements Serializable {
     private String game;
     private String player;
     private int points;
+
+    //@Temporal(TemporalType.TIMESTAMP)
     private Date playedOn;
 
     public Score(String game, String player, int points, Date playedOn) {

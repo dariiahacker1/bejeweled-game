@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import sk.tuke.kpi.kp.bejeweled.entity.Rating;
 
+import java.util.Date;
+
 @Service
 @Transactional
 public class RatingServiceJPA implements RatingService {
@@ -16,12 +18,19 @@ public class RatingServiceJPA implements RatingService {
     @Override
     public void setRating(Rating rating) throws RatingException {
         try {
-            entityManager.createNamedQuery("Rating.setRating")
+            int updatedRows = entityManager.createNamedQuery("Rating.setRating")
                     .setParameter("newRating", rating.getRating())
-                    .setParameter("id", rating.getIdent())
+                    .setParameter("newDate", new Date())
+                    .setParameter("game", rating.getGame())
+                    .setParameter("player", rating.getPlayer())
                     .executeUpdate();
+
+            if(updatedRows == 0) {
+                rating.setRatedOn(new Date());
+                entityManager.persist(rating);
+            }
         } catch (Exception e) {
-            throw new RatingException("Problem updating rating", e);
+            throw new RatingException("Problem setting rating", e);
         }
     }
 

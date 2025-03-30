@@ -19,7 +19,7 @@ import java.util.Date;
 
 @NamedQuery(
         name = "Rating.setRating",
-        query = "UPDATE Rating r SET r.rating = :newRating WHERE r.id = :id"
+        query = "UPDATE Rating r SET r.rating = :newRating, r.ratedOn = :newDate WHERE r.game = :game AND r.player = :player"
 )
 
 @NamedQuery(
