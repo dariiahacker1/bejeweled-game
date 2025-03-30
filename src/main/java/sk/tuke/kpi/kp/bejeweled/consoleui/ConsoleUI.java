@@ -27,11 +27,11 @@ public class ConsoleUI {
     private Timer timer = new Timer();
 
     @Autowired
-    private CommentServiceJPA commentService;
+    private CommentService commentService;
     @Autowired
-    private RatingServiceJPA ratingService;
+    private RatingService ratingService;
     @Autowired
-    private ScoreServiceJPA scoreService;
+    private ScoreService scoreService;
 
     @Autowired
     public ConsoleUI(Field field, @Value("${game.winScore}") int winScore, @Value("${game.timeLimit}") int timeLimitInSeconds) {

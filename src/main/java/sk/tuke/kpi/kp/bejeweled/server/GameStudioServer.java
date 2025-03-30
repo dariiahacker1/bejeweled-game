@@ -26,5 +26,7 @@ public class GameStudioServer {
     }
 
     @Bean
-    public RatingService ratingService() {return new RatingServiceJPA();}
+    public RatingService ratingService() {
+        return new RatingServiceJPA();
+    }
 }
