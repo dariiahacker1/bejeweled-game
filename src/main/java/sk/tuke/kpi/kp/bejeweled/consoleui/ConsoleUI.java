@@ -1,5 +1,7 @@
 package sk.tuke.kpi.kp.bejeweled.consoleui;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
+@Getter
+@Setter
 public class ConsoleUI {
     private final Field field;
     private Player player;

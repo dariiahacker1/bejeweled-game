@@ -2,6 +2,7 @@ package sk.tuke.kpi.kp.bejeweled.core;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
 

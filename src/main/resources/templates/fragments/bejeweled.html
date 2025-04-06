@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bejeweled Game</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+</head>
+<body class="bejeweled">
+<div class="left-part">
+    <img th:src="@{/images/logo.png}" th:alt="BEJEWELED" class="logo">
+    <div class="score-board">
+        <img th:src="@{/images/score.png}"
+             th:alt="'score board'" class="board"/>
+    </div>
+    <div class="timer-board">
+        <img th:src="@{/images/timer.png}"
+             th:alt="'timer board'" class="board">
+<!--        <p id="timer-display" th:text="${timeRemaining}">300</p>-->
+    </div>
+    <div class="controls">
+        <a href="/bejeweled?command=new" class="new-game-button">New Game</a>
+    </div>
+</div>
+<div class="right-part">
+    <table class="game-board">
+        <tbody>
+        <tr th:each="row, rowStat : ${gameField.grid}">
+            <td th:each="jewel, colStat : ${row}" class="jewel-cell">
+                <a href="javascript:void(0);" th:onclick="|selectJewel(${rowStat.index}, ${colStat.index})|">
+                    <img th:src="@{/images/tuke_logo_{jewelType}.svg.png(jewelType=${#strings.toLowerCase(jewel.type)})}"
+                         th:alt="${jewel.type}"/>
+                </a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    let selectedRow = null;
+    let selectedColumn = null;
+
+    function selectJewel(row, column) {
+        if (selectedRow === null && selectedColumn === null) {
+            selectedRow = row;
+            selectedColumn = column;
+        } else {
+            window.location.href = `/bejeweled?command=swap&row=${selectedRow}&column=${selectedColumn}&newRow=${row}&newColumn=${column}`;
+            selectedRow = null;
+            selectedColumn = null;
+        }
+    }
+</script>
+</body>
+</html>
+
+</body>
+
+</html>
