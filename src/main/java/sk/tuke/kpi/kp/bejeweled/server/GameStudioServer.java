@@ -4,29 +4,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import sk.tuke.kpi.kp.bejeweled.service.*;
 
 @SpringBootApplication
-@Configuration
 @EntityScan("sk.tuke.kpi.kp.bejeweled.entity")
+@EnableScheduling
 public class GameStudioServer {
     public static void main(String[] args) {
         SpringApplication.run(GameStudioServer.class, args);
     }
 
     @Bean
-    public ScoreService scoreService() {
-        return new ScoreServiceJPA();
-    }
+    public ScoreService scoreService() {return new ScoreServiceJPA();}
 
     @Bean
-    public CommentService commentService() {
-        return new CommentServiceJPA();
-    }
+    public CommentService commentService() {return new CommentServiceJPA();}
 
     @Bean
-    public RatingService ratingService() {
-        return new RatingServiceJPA();
-    }
+    public RatingService ratingService() {return new RatingServiceJPA();}
 }

@@ -11,17 +11,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
-
+@NoArgsConstructor
+@AllArgsConstructor
 @NamedQuery(
         name = "Rating.setRating",
         query = "UPDATE Rating r SET r.rating = :newRating, r.ratedOn = :newDate WHERE r.game = :game AND r.player = :player"
 )
-
 @NamedQuery(
         name = "Rating.getAverageRating",
         query = "SELECT AVG(r.rating) FROM Rating r WHERE r.game = :game"

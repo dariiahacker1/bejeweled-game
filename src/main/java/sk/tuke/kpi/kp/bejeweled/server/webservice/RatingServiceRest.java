@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import sk.tuke.kpi.kp.bejeweled.entity.Rating;
 import sk.tuke.kpi.kp.bejeweled.service.RatingService;
 
-
 @RestController
 @RequestMapping("/api/rating")
 public class RatingServiceRest {

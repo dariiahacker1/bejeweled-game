@@ -11,14 +11,19 @@
     <div class="score-board">
         <img th:src="@{/images/score.png}"
              th:alt="'score board'" class="board"/>
+        <div class="score-counter">
+            <p id="score-display" th:text="${playerScore}">300</p>
+        </div>
     </div>
     <div class="timer-board">
         <img th:src="@{/images/timer.png}"
              th:alt="'timer board'" class="board">
-<!--        <p id="timer-display" th:text="${timeRemaining}">300</p>-->
+        <div class="timer-counter">
+            <p id="timer-display" th:text="${timeRemaining}">300</p>
+        </div>
     </div>
     <div class="controls">
-        <a href="/bejeweled?command=new" class="new-game-button">New Game</a>
+        <a href="/bejeweled?command=stop" class="stop-game-button">Stop Game</a>
     </div>
 </div>
 <div class="right-part">
@@ -35,6 +40,7 @@
         </tr>
         </tbody>
     </table>
+
 </div>
 <script>
     let selectedRow = null;
@@ -50,9 +56,18 @@
             selectedColumn = null;
         }
     }
+
+    function updateTimer() {
+        fetch("/bejeweled/time")
+            .then(res => res.text())
+            .then(time => {
+                document.getElementById("timer-display").innerText = time;
+            });
+    }
+
+    setInterval(updateTimer, 1000);
 </script>
-</body>
-</html>
+
 
 </body>
 

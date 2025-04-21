@@ -7,11 +7,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @NamedQuery(
         name = "Comment.getComments",
         query = "SELECT c FROM Comment c WHERE c.game = :game ORDER BY c.commentedOn DESC"
@@ -20,10 +20,6 @@ import java.util.Date;
         name = "Comment.resetComments",
         query = "DELETE FROM Comment"
 )
-//@NamedQuery(
-//        name = "Comment.addComment",
-//        query = "INSERT INTO Comment (game, player, comment, commentedOn) VALUES (:game, :player, :comment, :commentedOn)"
-//)
 public class Comment implements Serializable {
 
     @Id

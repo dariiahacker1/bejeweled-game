@@ -11,19 +11,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @NamedQuery( name = "Score.getTopScores",
         query = "SELECT s FROM Score s WHERE s.game=:game ORDER BY s.points DESC")
 @NamedQuery( name = "Score.resetScores",
         query = "DELETE FROM Score")
-//@NamedQuery(
-//        name = "Score.addScore",
-//        query = "INSERT INTO Score (game, player, points, playedOn) VALUES (:game, :player, :points, :playedOn)"
-//)
 public class Score implements Serializable {
 
     @Id
@@ -33,8 +29,6 @@ public class Score implements Serializable {
     private String game;
     private String player;
     private int points;
-
-    //@Temporal(TemporalType.TIMESTAMP)
     private Date playedOn;
 
     public Score(String game, String player, int points, Date playedOn) {
