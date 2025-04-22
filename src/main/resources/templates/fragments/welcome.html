@@ -5,13 +5,20 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body class="bejeweled">
-<div class="welcome-container">
-    <h1>Welcome to Bejeweled!</h1>
-    <form th:action="@{/bejeweled/start}" method="post">
-<!--        <label for="playerName">Enter your name:</label>-->
-        <input type="text" id="playerName" name="playerName" placeholder="Enter your name" required>
-        <button type="submit">Start Game</button>
-    </form>
+
+<div class="welcome">
+
+    <img th:src="@{/images/logo.png}"
+         th:alt="'game over'" class="gameover">
+
+    <div class="welcome-container">
+        <h1>Welcome to Bejeweled!</h1>
+        <form th:action="@{/bejeweled/start}" method="post">
+            <!--        <label for="playerName">Enter your name:</label>-->
+            <input type="text" id="playerName" name="playerName" placeholder="Enter your name" required>
+            <button type="submit">Start Game</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

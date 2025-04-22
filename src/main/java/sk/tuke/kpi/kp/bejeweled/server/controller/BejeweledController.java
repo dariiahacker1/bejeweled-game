@@ -29,11 +29,11 @@ import java.util.TimerTask;
 @SessionAttributes("field")
 public class BejeweledController {
 
-    private Field field = new Field(8, 8);
-    private MoveHandler moveHandler = new MoveHandler(field);
-    private ConsoleUI consoleUI = new ConsoleUI(field, 400, 300);
+    private Field field;
+    private MoveHandler moveHandler;
+    private ConsoleUI consoleUI;
     private int timeRemaining;
-    private Player player = new Player("GUEST");
+    private Player player ;
 
     @Autowired
     private ScoreService scoreService;
@@ -42,10 +42,25 @@ public class BejeweledController {
     @Autowired
     private RatingService ratingService;
 
-    private GameState gameState = GameState.PLAYING;
+    private GameState gameState;
+
+    private Timer gameTimer;
 
     @GetMapping("/bejeweled/welcome")
     public String showWelcomeForm(Model model) {
+
+        if (gameTimer != null) {
+            gameTimer.cancel();
+            gameTimer = null;
+        }
+
+        this.field = new Field(8, 8);
+        this.player = new Player("GUEST");
+        this.moveHandler = new MoveHandler(this.field);
+        this.consoleUI = new ConsoleUI(this.field, 400, 300);
+        this.gameState = GameState.PLAYING;
+        this.timeRemaining = consoleUI.getTimeRemaining();
+
         model.addAttribute("playerName", "");
         return "fragments/welcome";
     }
@@ -57,20 +72,18 @@ public class BejeweledController {
         field.initializeBoard();
         gameState = GameState.PLAYING;
 
-        timeRemaining = consoleUI.getTimeRemaining();
-
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        gameTimer = new Timer();
+        gameTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if (field.getGameState() == GameState.PLAYING && timeRemaining > 0) {
                     timeRemaining--;
                     if (timeRemaining == 0) {
                         field.setGameState(GameState.FAILED);
-                        timer.cancel();
+                        gameTimer.cancel();
                     }
                 } else {
-                    timer.cancel();
+                    gameTimer.cancel();
                 }
             }
         }, 1000, 1000);
