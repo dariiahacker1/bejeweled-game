@@ -33,7 +33,7 @@ public class BejeweledController {
     private MoveHandler moveHandler;
     private ConsoleUI consoleUI;
     private int timeRemaining;
-    private Player player ;
+    private Player player;
 
     @Autowired
     private ScoreService scoreService;
@@ -119,7 +119,7 @@ public class BejeweledController {
             }
         } else if ("new".equals(command)) {
             this.field = new Field(8, 8);
-        }else if ("stop".equals(command)) {
+        } else if ("stop".equals(command)) {
             gameState = GameState.STOPPED;
             return endGame(redirectAttributes);
         }
@@ -170,11 +170,9 @@ public class BejeweledController {
 
     @PostMapping("/bejeweled/feedback")
     public String handleFeedback(@RequestParam("comment") String comment,
-                                 @RequestParam("rating") int rating,
-                                 RedirectAttributes redirectAttributes) {
+                                 @RequestParam("rating") int rating) {
         commentService.addComment(new Comment("bejeweled", player.getUsername(), comment, new Date()));
         ratingService.setRating(new Rating("bejeweled", player.getUsername(), rating, new Date()));
-        redirectAttributes.addFlashAttribute("message", "Thank you for your feedback!");
         return "redirect:/bejeweled/end";
     }
 
