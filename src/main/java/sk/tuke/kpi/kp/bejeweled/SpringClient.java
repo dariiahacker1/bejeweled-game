@@ -10,6 +10,8 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.web.client.RestTemplate;
 import sk.tuke.kpi.kp.bejeweled.consoleui.ConsoleUI;
 import sk.tuke.kpi.kp.bejeweled.core.Field;
+import sk.tuke.kpi.kp.bejeweled.core.MoveHandler;
+import sk.tuke.kpi.kp.bejeweled.core.Player;
 import sk.tuke.kpi.kp.bejeweled.service.*;
 
 
@@ -32,6 +34,7 @@ public class SpringClient {
 
     @Bean
     public Field field() {return new Field(8, 8);}
+
 
     @Bean
     public RestTemplate restTemplate() {

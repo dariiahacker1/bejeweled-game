@@ -5,6 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import sk.tuke.kpi.kp.bejeweled.consoleui.ConsoleUI;
+import sk.tuke.kpi.kp.bejeweled.core.Field;
+import sk.tuke.kpi.kp.bejeweled.core.MoveHandler;
+import sk.tuke.kpi.kp.bejeweled.core.Player;
 import sk.tuke.kpi.kp.bejeweled.service.*;
 
 @SpringBootApplication
@@ -13,6 +17,26 @@ import sk.tuke.kpi.kp.bejeweled.service.*;
 public class GameStudioServer {
     public static void main(String[] args) {
         SpringApplication.run(GameStudioServer.class, args);
+    }
+
+    @Bean
+    public Field field() {
+        return new Field(8, 8);
+    }
+
+    @Bean
+    public Player player() {
+        return new Player("GUEST");
+    }
+
+    @Bean
+    public MoveHandler moveHandler(Field field) {
+        return new MoveHandler(field);
+    }
+
+    @Bean
+    public ConsoleUI consoleUI(Field field) {
+        return new ConsoleUI(field, 400, 300);
     }
 
     @Bean

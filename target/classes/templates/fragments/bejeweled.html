@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
 </head>
 <body class="bejeweled">
+
 <div class="left-part">
     <img th:src="@{/images/logo.png}" th:alt="BEJEWELED" class="logo">
     <div class="score-board">
@@ -26,6 +27,7 @@
         <a href="/bejeweled?command=stop" class="stop-game-button">Stop Game</a>
     </div>
 </div>
+
 <div class="right-part">
     <table class="game-board">
         <tbody>
@@ -35,22 +37,23 @@
                     <img th:src="@{/images/tuke_logo_{jewelType}.svg.png(jewelType=${#strings.toLowerCase(jewel.type)})}"
                          th:alt="${jewel.type}"/>
                 </a>
-
             </td>
         </tr>
         </tbody>
     </table>
-
 </div>
+
 <script>
     let selectedRow = null;
     let selectedColumn = null;
 
     function selectJewel(row, column) {
         if (selectedRow === null && selectedColumn === null) {
+            // First click
             selectedRow = row;
             selectedColumn = column;
         } else {
+            // Second click → trigger a swap
             window.location.href = `/bejeweled?command=swap&row=${selectedRow}&column=${selectedColumn}&newRow=${row}&newColumn=${column}`;
             selectedRow = null;
             selectedColumn = null;
@@ -68,7 +71,5 @@
     setInterval(updateTimer, 1000);
 </script>
 
-
 </body>
-
 </html>

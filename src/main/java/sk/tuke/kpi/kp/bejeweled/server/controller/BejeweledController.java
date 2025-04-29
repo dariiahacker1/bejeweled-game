@@ -29,21 +29,16 @@ import java.util.TimerTask;
 @SessionAttributes("field")
 public class BejeweledController {
 
-    private Field field;
-    private MoveHandler moveHandler;
-    private ConsoleUI consoleUI;
-    private int timeRemaining;
-    private Player player;
-
-    @Autowired
-    private ScoreService scoreService;
-    @Autowired
-    private CommentService commentService;
-    @Autowired
-    private RatingService ratingService;
+    @Autowired private Field field;
+    @Autowired private Player player;
+    @Autowired private MoveHandler moveHandler;
+    @Autowired private ConsoleUI consoleUI;
+    @Autowired private ScoreService scoreService;
+    @Autowired private CommentService commentService;
+    @Autowired private RatingService ratingService;
 
     private GameState gameState;
-
+    private int timeRemaining;
     private Timer gameTimer;
 
     @GetMapping("/bejeweled/welcome")
@@ -54,10 +49,6 @@ public class BejeweledController {
             gameTimer = null;
         }
 
-        this.field = new Field(8, 8);
-        this.player = new Player("GUEST");
-        this.moveHandler = new MoveHandler(this.field);
-        this.consoleUI = new ConsoleUI(this.field, 400, 300);
         this.gameState = GameState.PLAYING;
         this.timeRemaining = consoleUI.getTimeRemaining();
 
@@ -109,11 +100,9 @@ public class BejeweledController {
                             Model model, RedirectAttributes redirectAttributes) {
 
         if ("swap".equals(command) && row != null && column != null && newRow != null && newColumn != null) {
-
             if (moveHandler.isValidMove(row, column, newRow, newColumn) && moveHandler.isSwapValid(row, column, newRow, newColumn)) {
                 moveHandler.swapJewels(row, column, newRow, newColumn);
                 field.checkMatchesAndRemove(consoleUI.getPlayer());
-
             } else {
                 System.out.println("Invalid move: swap does not create a sequence.");
             }
@@ -175,6 +164,5 @@ public class BejeweledController {
         ratingService.setRating(new Rating("bejeweled", player.getUsername(), rating, new Date()));
         return "redirect:/bejeweled/end";
     }
-
 
 }
