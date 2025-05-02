@@ -6,9 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.ui.Model;
+
 import sk.tuke.kpi.kp.bejeweled.consoleui.ConsoleUI;
 import sk.tuke.kpi.kp.bejeweled.core.Field;
-import org.springframework.ui.Model;
 import sk.tuke.kpi.kp.bejeweled.core.GameState;
 import sk.tuke.kpi.kp.bejeweled.core.MoveHandler;
 import sk.tuke.kpi.kp.bejeweled.core.Player;

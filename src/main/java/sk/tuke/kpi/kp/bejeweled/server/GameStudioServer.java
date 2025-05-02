@@ -20,24 +20,16 @@ public class GameStudioServer {
     }
 
     @Bean
-    public Field field() {
-        return new Field(8, 8);
-    }
+    public Field field() {return new Field(8, 8);}
 
     @Bean
-    public Player player() {
-        return new Player("GUEST");
-    }
+    public Player player() {return new Player("GUEST");}
 
     @Bean
-    public MoveHandler moveHandler(Field field) {
-        return new MoveHandler(field);
-    }
+    public MoveHandler moveHandler(Field field) {return new MoveHandler(field);}
 
     @Bean
-    public ConsoleUI consoleUI(Field field) {
-        return new ConsoleUI(field, 400, 300);
-    }
+    public ConsoleUI consoleUI(Field field) {return new ConsoleUI(field, 400, 300);}
 
     @Bean
     public ScoreService scoreService() {return new ScoreServiceJPA();}
