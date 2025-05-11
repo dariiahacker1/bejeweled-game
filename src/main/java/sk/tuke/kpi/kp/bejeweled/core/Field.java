@@ -194,15 +194,16 @@ public class Field {
         }
     }
 
-    public Jewel getJewel(int x, int y) {
+    public Jewel getJewel(int y, int x) {
         if (x < 0 || x >= width || y < 0 || y >= height) return null;
         return grid[x][y];
     }
 
-    public void setJewel(int x, int y, Jewel jewel) {
+    public void setJewel(int y, int x, Jewel jewel) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
             grid[x][y] = jewel;
         }
     }
+
 
 }

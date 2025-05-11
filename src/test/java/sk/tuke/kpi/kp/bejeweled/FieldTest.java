@@ -21,7 +21,7 @@ public class FieldTest {
         assertNotNull(field, "Field should be initialized.");
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                assertEquals(JewelState.ADDED,field.getJewel(i, j).getState(),"Each jewel should have been added.");
+                assertEquals(JewelState.ADDED,field.getJewel(j, i).getState(),"Each jewel should have been added.");
             }
         }
     }

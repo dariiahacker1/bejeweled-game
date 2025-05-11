@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.context.annotation.SessionScope;
 import sk.tuke.kpi.kp.bejeweled.consoleui.ConsoleUI;
 import sk.tuke.kpi.kp.bejeweled.core.Field;
 import sk.tuke.kpi.kp.bejeweled.core.MoveHandler;
@@ -22,8 +23,9 @@ public class GameStudioServer {
     @Bean
     public Field field() {return new Field(8, 8);}
 
-    @Bean
-    public Player player() {return new Player("GUEST");}
+//    @Bean
+//    @SessionScope
+//    public Player player() {return new Player("GUEST");}
 
     @Bean
     public MoveHandler moveHandler(Field field) {return new MoveHandler(field);}

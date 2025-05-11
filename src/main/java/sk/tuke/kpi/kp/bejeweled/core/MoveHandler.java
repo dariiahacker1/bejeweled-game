@@ -25,23 +25,20 @@ public class MoveHandler {
         return false;
     }
 
-    public boolean isSwapValid(int x1, int y1, int x2, int y2) {
-        swapJewels(x1, y1, x2, y2);
+    public boolean isSwapValid(int row1, int col1, int row2, int col2) {
+        swapJewels(row1, col1, row2, col2);
         boolean hasMatch = field.checkMatches();
-        swapJewels(x1, y1, x2, y2);
+        swapJewels(row1, col1, row2, col2);
         return hasMatch;
     }
 
     public void swapJewels(int x1, int y1, int x2, int y2) {
-        Jewel jewel1 = field.getJewel(x1, y1);
-        Jewel jewel2 = field.getJewel(x2, y2);
+        Jewel jewel1 = field.getJewel(y1, x1);
+        Jewel jewel2 = field.getJewel(y2, x2);
 
         if (jewel1 != null && jewel2 != null) {
-            field.setJewel(x1, y1, jewel2);
-            field.setJewel(x2, y2, jewel1);
-
-            jewel1.setPosition(x2, y2);
-            jewel2.setPosition(x1, y1);
+            field.setJewel(y1, x1, jewel2);
+            field.setJewel(y2, x2, jewel1);
         }
     }
 
