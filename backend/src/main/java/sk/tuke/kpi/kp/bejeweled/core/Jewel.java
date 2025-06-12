@@ -7,18 +7,18 @@ import lombok.Setter;
 @Setter
 public class Jewel {
     private JewelType type;
-    private int x, y;
+    private int row, col;
     private JewelState state = JewelState.ADDED;
+    private boolean isBomb;
 
-    public Jewel(JewelType type, int x, int y) {
+    public Jewel(JewelType type, int row, int col) {
         this.type = type;
-        this.x = x;
-        this.y = y;
+        this.row = row;
+        this.col = col;
     }
 
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public void setPosition(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
-
 }

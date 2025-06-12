@@ -2,10 +2,10 @@ package sk.tuke.kpi.kp.bejeweled.core;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-
 
 @Getter
 @Setter
@@ -19,10 +19,76 @@ public class Field {
     public Field(int width, int height) {
         this.width = width;
         this.height = height;
-        this.grid = new Jewel[width][height];
+        this.grid = new Jewel[height][width];
         this.gameState = GameState.PLAYING;
         this.moveHandler = new MoveHandler(this);
-        initializeBoard();
+    }
+
+    public List<int[]> activateBomb(int row, int col, Player player) {
+        List<int[]> affected = new ArrayList<>();
+
+        for (int r = Math.max(0, row - 1); r <= Math.min(height - 1, row + 1); r++) {
+            for (int c = Math.max(0, col - 1); c <= Math.min(width - 1, col + 1); c++) {
+                if (grid[r][c] != null) {
+                    grid[r][c].setState(JewelState.REMOVED);
+                    affected.add(new int[]{r, c});
+                }
+            }
+        }
+
+        processRemovalsAndRefill(player);
+
+        if (player != null) {
+            player.updateScore(25);
+        }
+
+        return affected;
+    }
+
+    public void swapJewels(int row1, int col1, int row2, int col2) {
+        Jewel jewel1 = getJewel(row1, col1);
+        Jewel jewel2 = getJewel(row2, col2);
+
+        if (jewel1 != null && jewel2 != null) {
+            setJewel(row1, col1, jewel2);
+            setJewel(row2, col2, jewel1);
+        }
+    }
+
+    private Jewel[][] applyGravity() {
+        Random random = new Random();
+        Jewel[][] newGrid = new Jewel[height][width];
+
+        for (int c = 0; c < width; c++) {
+            int writeRow = height - 1;
+
+            for (int r = height - 1; r >= 0; r--) {
+                if (grid[r][c] != null && grid[r][c].getState() != JewelState.REMOVED) {
+                    newGrid[writeRow--][c] = grid[r][c];
+                    newGrid[writeRow + 1][c].setPosition(writeRow + 1, c);
+                }
+            }
+
+            while (writeRow >= 0) {
+                Jewel newJewel = new Jewel(
+                        JEWEL_TYPES[random.nextInt(JEWEL_TYPES.length - 1)],
+                        writeRow, c
+                );
+                if (random.nextDouble() < 0.05) {
+                    newJewel.setBomb(true);
+                }
+                newGrid[writeRow--][c] = newJewel;
+            }
+        }
+
+        return newGrid;
+    }
+
+    private void processRemovalsAndRefill(Player player) {
+        this.grid = applyGravity();
+        if (player != null) {
+            checkMatchesAndRemove(player);
+        }
     }
 
     public void initializeBoard() {
@@ -34,7 +100,11 @@ public class Field {
 
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-                    grid[i][j] = new Jewel(JEWEL_TYPES[rand.nextInt(JEWEL_TYPES.length)], i, j);
+                    grid[i][j] = new Jewel(JEWEL_TYPES[rand.nextInt(JEWEL_TYPES.length - 1)], i, j);
+
+                    if (rand.nextDouble() < 0.05) {
+                        grid[i][j].setBomb(true);
+                    }
                 }
             }
 
@@ -87,7 +157,6 @@ public class Field {
 
         return false;
     }
-
 
     public void checkMatchesAndRemove(Player player) {
         boolean isFirstMatch = false;
@@ -151,29 +220,7 @@ public class Field {
                 }
             }
 
-            for (int col = 0; col < width; col++) {
-                for (int row = height - 1; row >= 0; row--) {
-                    if (grid[col][row].getState() == JewelState.REMOVED) {
-                        int searchIndex = row - 1;
-                        while (searchIndex >= 0 && grid[col][searchIndex].getState() == JewelState.REMOVED) {
-                            searchIndex--;
-                        }
-                        if (searchIndex >= 0) {
-                            grid[col][row] = grid[col][searchIndex];
-                            grid[col][searchIndex].setState(JewelState.REMOVED);
-                        }
-                    }
-                }
-            }
-
-            Random random = new Random();
-            for (int col = 0; col < width; col++) {
-                for (int row = 0; row < height; row++) {
-                    if (grid[col][row].getState() == JewelState.REMOVED) {
-                        grid[col][row] = new Jewel(JEWEL_TYPES[random.nextInt(JEWEL_TYPES.length)], col, row);
-                    }
-                }
-            }
+            this.grid = applyGravity();
 
         } while (matchesFound);
     }
@@ -188,22 +235,21 @@ public class Field {
         for (int row = 0; row < height; row++) {
             System.out.print(Character.toString(65 + row) + "  ");
             for (int col = 0; col < width; col++) {
-                System.out.print(grid[col][row].getType().name().substring(0,1).toUpperCase() + " ");
+                System.out.print(grid[col][row].getType().name().substring(0, 1).toUpperCase() + " ");
             }
             System.out.println();
         }
     }
 
-    public Jewel getJewel(int y, int x) {
-        if (x < 0 || x >= width || y < 0 || y >= height) return null;
-        return grid[x][y];
+    public Jewel getJewel(int row, int col) {
+        if (row < 0 || row >= height || col < 0 || col >= width) return null;
+        return grid[row][col];
     }
 
-    public void setJewel(int y, int x, Jewel jewel) {
-        if (x >= 0 && x < width && y >= 0 && y < height) {
-            grid[x][y] = jewel;
+    public void setJewel(int row, int col, Jewel jewel) {
+        if (row >= 0 && row < height && col >= 0 && col < width) {
+            grid[row][col] = jewel;
         }
     }
-
 
 }

@@ -1,8 +1,10 @@
 package sk.tuke.kpi.kp.bejeweled.core;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Player {
     private final String username;
     private int score = 0;

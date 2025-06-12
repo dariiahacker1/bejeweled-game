@@ -31,10 +31,13 @@ public class Score implements Serializable {
     private int points;
     private Date playedOn;
 
-    public Score(String game, String player, int points, Date playedOn) {
+    private int playingTime; // in seconds
+
+    public Score(String game, String player, int points, Date playedOn, int playingTime) {
         this.game = game;
         this.player = player;
         this.points = points;
         this.playedOn = playedOn;
+        this.playingTime = playingTime;
     }
 }

@@ -18,7 +18,7 @@ public class ScoreServiceJDBC implements ScoreService {
     public static final String PASSWORD = "postgres";
     public static final String SELECT = "SELECT game, player, points, playedOn FROM score WHERE game = ? ORDER BY points DESC LIMIT 10";
     public static final String DELETE = "DELETE FROM score";
-    public static final String INSERT = "INSERT INTO score (game, player, points, playedOn) VALUES (?, ?, ?, ?)";
+    public static final String INSERT = "INSERT INTO score (game, player, points, playedOn, timeRemaining) VALUES (?, ?, ?, ?, ?)";
 
     @Override
     public void addScore(Score score) {
@@ -29,6 +29,7 @@ public class ScoreServiceJDBC implements ScoreService {
             statement.setString(2, score.getPlayer());
             statement.setInt(3, score.getPoints());
             statement.setTimestamp(4, new Timestamp(score.getPlayedOn().getTime()));
+            statement.setInt(5, score.getPlayingTime());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new ScoreException("Problem inserting score", e);
@@ -44,7 +45,7 @@ public class ScoreServiceJDBC implements ScoreService {
             try (ResultSet rs = statement.executeQuery()) {
                 List<Score> scores = new ArrayList<>();
                 while (rs.next()) {
-                    scores.add(new Score(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getTimestamp(4)));
+                    scores.add(new Score(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getTimestamp(4), rs.getInt(5)));
                 }
                 return scores;
             }

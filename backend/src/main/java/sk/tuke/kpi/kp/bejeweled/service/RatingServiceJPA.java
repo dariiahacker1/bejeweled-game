@@ -34,7 +34,6 @@ public class RatingServiceJPA implements RatingService {
         }
     }
 
-
     @Override
     public int getAverageRating(String game) throws RatingException {
         try {

@@ -64,15 +64,11 @@
             <artifactId>spring-security-crypto</artifactId>
             <version>5.7.1</version>
         </dependency>
-        <!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
-<!--        </dependency>-->
+
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Compiler Plugin (Corrected, only one instance now) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -102,7 +98,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven Shade Plugin (for building a runnable JAR) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

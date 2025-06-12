@@ -59,7 +59,7 @@ public class ConsoleUI {
         }
 
         timer.cancel();
-        endGame();
+     //   endGame();
     }
 
     private void initializePlayer() {
@@ -81,7 +81,7 @@ public class ConsoleUI {
 
         if (input.equals("X")) {
             field.setGameState(GameState.STOPPED);
-            endGame();
+         //   endGame();
             return;
         }
 
@@ -101,7 +101,7 @@ public class ConsoleUI {
             int x2 = Integer.parseInt(matcher.group(4));
 
             if (moveHandler.isValidMove(x1, y1, x2, y2) && moveHandler.isSwapValid(x1, y1, x2, y2)) {
-                moveHandler.swapJewels(x1, y1, x2, y2);
+                field.swapJewels(x1, y1, x2, y2);
                 field.checkMatchesAndRemove(player);
                 return true;
             }
@@ -110,21 +110,21 @@ public class ConsoleUI {
         return false;
     }
 
-    private void endGame() {
-        scoreService.addScore(new Score("bejeweled", player.getUsername(), player.getScore(), new Date()));
-
-        if (field.getGameState() == GameState.PLAYING && timeRemaining == 0) {
-            field.setGameState(GameState.FAILED);
-        }
-
-        switch (field.getGameState()) {
-            case SOLVED -> System.out.println("You won!");
-            case STOPPED -> System.out.println("Game over!");
-            case FAILED -> System.out.println("Time's up! You lost.");
-        }
-
-        handleRestart();
-    }
+//    private void endGame() {
+//        scoreService.addScore(new Score("bejeweled", player.getUsername(), player.getScore(), new Date()));
+//
+//        if (field.getGameState() == GameState.PLAYING && timeRemaining == 0) {
+//            field.setGameState(GameState.FAILED);
+//        }
+//
+//        switch (field.getGameState()) {
+//            case SOLVED -> System.out.println("You won!");
+//            case STOPPED -> System.out.println("Game over!");
+//            case FAILED -> System.out.println("Time's up! You lost.");
+//        }
+//
+//        handleRestart();
+//    }
 
     private void restartGame() {
         System.out.println("Starting a new game...");
@@ -223,6 +223,5 @@ public class ConsoleUI {
             }
         }, 1000, 1000);
     }
-    
 
 }
