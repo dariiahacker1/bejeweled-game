@@ -39,6 +39,21 @@ const HelpBar = () => {
 
     const audioRef = useRef(null);
 
+    const json = JSON.stringify({
+        name: "Bejeweled Assistant",
+        icon: "https://img.icons8.com/color/96/diamond.png",
+        description: "Your Bejeweled strategy helper!",
+        initialMessage: "How can I help you with Bejeweled today?",
+        initialResponse: "Welcome! Ready to get some tips on gems and combos?",
+        systemMessage: "You are a Bejeweled expert AI. You always give specific tips about gem matching, spotting combos, and using bombs. If asked, explain moves step-by-step. Be concise but helpful.",
+        chatLocation: "bejeweledAssistant"
+    });
+
+    const speakGptPayload = encodeURIComponent(
+        btoa(unescape(encodeURIComponent(json)))
+    );
+
+
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.src = audioFiles[selectedMusic];
@@ -65,15 +80,11 @@ const HelpBar = () => {
             {/* Embedded Assistant */}
             {assistantVisible && (
                 <div className="assistant-embedded" id="speakgpt">
-                    {/*<iframe*/}
-                    {/*    src={`https://assistant.teslasoft.org/embedded?payload=${speakGptPayload}`}*/}
-                    {/*    className="assistant-iframe"*/}
-                    {/*    title="Bejeweled Assistant"*/}
-                    {/*/>*/}
-                    // <div className="assistant-embedded" id="speakgpt">
-                    <iframe src="https://assistant.teslasoft.org/embedded"
-                            className="assistant-iframe"/>
-                    // </div>
+                    <iframe
+                        src={`https://assistant.teslasoft.org/embedded?payload=${speakGptPayload}`}
+                        className="assistant-iframe"
+                        title="Bejeweled Assistant"
+                    />
                 </div>
             )}
 
